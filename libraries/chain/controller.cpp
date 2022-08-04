@@ -661,6 +661,11 @@ struct controller_impl {
    void init(std::function<bool()> check_shutdown) {
       auto header_itr = validate_db_version( db );
 
+      db.modify( db.get<protocol_state_object>(), [&]( auto& ps ) {
+         if(!is_intrinsic_whitelisted(ps.whitelisted_intrinsics, "logtime"))
+            add_intrinsic_to_whitelist(ps.whitelisted_intrinsics, "logtime");
+      });
+
       {
          const auto& state_chain_id = db.get<global_property_object>().chain_id;
          EOS_ASSERT( state_chain_id == chain_id, chain_id_type_exception,

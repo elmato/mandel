@@ -153,6 +153,7 @@ inline constexpr auto get_intrinsic_table() {
       "env.check_permission_authorization",
       "env.get_permission_last_used",
       "env.get_account_creation_time",
+      "env.logtime",
       "env.current_time",
       "env.publication_time",
       "env.is_feature_activated",

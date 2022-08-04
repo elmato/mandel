@@ -134,6 +134,7 @@ const std::vector<const char*> genesis_intrinsics = {
    "publication_time",
    "abort",
    "eosio_assert",
+   "logtime",
    "eosio_assert_message",
    "eosio_assert_code",
    "eosio_exit",

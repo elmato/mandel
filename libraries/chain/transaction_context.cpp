@@ -368,6 +368,8 @@ namespace eosio { namespace chain {
       auto now = fc::time_point::now();
       trace->elapsed = now - start;
 
+      trace->timelogs = timelogs;
+
       update_billed_cpu_time( now );
 
       validate_cpu_usage_to_bill( billed_cpu_time_us, account_cpu_limit, true );

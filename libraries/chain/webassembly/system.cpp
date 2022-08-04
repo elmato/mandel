@@ -24,4 +24,9 @@ namespace eosio { namespace chain { namespace webassembly {
       return context.control.pending_block_num();
    }
 
+   void interface::logtime(null_terminated_ptr tag) {
+      std::string tmp(tag.data());
+      get_context().trx_context.logtime(tmp);
+   }
+
 }}} // ns eosio::chain::webassembly

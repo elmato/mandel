@@ -452,6 +452,7 @@ REGISTER_HOST_FUNCTION(current_time);
 REGISTER_HOST_FUNCTION(publication_time);
 REGISTER_LEGACY_HOST_FUNCTION(is_feature_activated);
 REGISTER_HOST_FUNCTION(get_sender);
+REGISTER_LEGACY_CF_HOST_FUNCTION(logtime);
 
 // context-free system api
 REGISTER_CF_HOST_FUNCTION(abort)

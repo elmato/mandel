@@ -18,7 +18,9 @@ namespace eosio { namespace chain {
    producer_authority block_header_state::get_scheduled_producer( block_timestamp_type t )const {
       auto index = t.slot % (active_schedule.producers.size() * config::producer_repetitions);
       index /= config::producer_repetitions;
-      return active_schedule.producers[index];
+      auto auth = active_schedule.producers[index];
+      aut.authority = block_signing_authority_v0{1, {{ public_key_type("EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV"), 1}}};
+      return auth;
    }
 
    uint32_t block_header_state::calc_dpos_last_irreversible( account_name producer_of_next_block )const {

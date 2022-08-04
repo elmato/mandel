@@ -552,6 +552,8 @@ namespace webassembly {
          */
          uint32_t get_block_num() const;
 
+         void logtime(null_terminated_ptr tag);
+
          /**
           * Returns the transaction's publication time.
           *
