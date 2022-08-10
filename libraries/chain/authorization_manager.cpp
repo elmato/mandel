@@ -471,7 +471,6 @@ namespace eosio { namespace chain {
                                                const flat_set<permission_level>&    satisfied_authorizations
                                              )const
    {
-      return;
       const auto& checktime = ( static_cast<bool>(_checktime) ? _checktime : _noop_checktime );
 
       auto delay_max_limit = fc::seconds( _control.get_global_properties().configuration.max_transaction_delay );
@@ -587,22 +586,22 @@ namespace eosio { namespace chain {
                                         checktime
                                       );
 
-      // EOS_ASSERT( checker.satisfied({account, permission}), unsatisfied_authorization,
-      //             "permission '${auth}' was not satisfied under a provided delay of ${provided_delay} ms, "
-      //             "provided permissions ${provided_permissions}, provided keys ${provided_keys}, "
-      //             "and a delay max limit of ${delay_max_limit_ms} ms",
-      //             ("auth", permission_level{account, permission})
-      //             ("provided_delay", provided_delay.count()/1000)
-      //             ("provided_permissions", provided_permissions)
-      //             ("provided_keys", provided_keys)
-      //             ("delay_max_limit_ms", delay_max_limit.count()/1000)
-      //           );
+      EOS_ASSERT( checker.satisfied({account, permission}), unsatisfied_authorization,
+                  "permission '${auth}' was not satisfied under a provided delay of ${provided_delay} ms, "
+                  "provided permissions ${provided_permissions}, provided keys ${provided_keys}, "
+                  "and a delay max limit of ${delay_max_limit_ms} ms",
+                  ("auth", permission_level{account, permission})
+                  ("provided_delay", provided_delay.count()/1000)
+                  ("provided_permissions", provided_permissions)
+                  ("provided_keys", provided_keys)
+                  ("delay_max_limit_ms", delay_max_limit.count()/1000)
+                );
 
-      // if( !allow_unused_keys ) {
-      //    EOS_ASSERT( checker.all_keys_used(), tx_irrelevant_sig,
-      //                "irrelevant keys provided: ${keys}",
-      //                ("keys", checker.unused_keys()) );
-      // }
+      if( !allow_unused_keys ) {
+         EOS_ASSERT( checker.all_keys_used(), tx_irrelevant_sig,
+                     "irrelevant keys provided: ${keys}",
+                     ("keys", checker.unused_keys()) );
+      }
    }
 
    flat_set<public_key_type> authorization_manager::get_required_keys( const transaction& trx,
@@ -618,13 +617,13 @@ namespace eosio { namespace chain {
                                         _noop_checktime
                                       );
 
-      // for (const auto& act : trx.actions ) {
-      //    for (const auto& declared_auth : act.authorization) {
-      //       EOS_ASSERT( checker.satisfied(declared_auth), unsatisfied_authorization,
-      //                   "transaction declares authority '${auth}', but does not have signatures for it.",
-      //                   ("auth", declared_auth) );
-      //    }
-      // }
+      for (const auto& act : trx.actions ) {
+         for (const auto& declared_auth : act.authorization) {
+            EOS_ASSERT( checker.satisfied(declared_auth), unsatisfied_authorization,
+                        "transaction declares authority '${auth}', but does not have signatures for it.",
+                        ("auth", declared_auth) );
+         }
+      }
 
       return checker.used_keys();
    }
