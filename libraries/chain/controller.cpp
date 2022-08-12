@@ -1477,9 +1477,12 @@ struct controller_impl {
             }
          }
 
+         auto t_pre_context_create = fc::time_point::now() - start;
          const signed_transaction& trn = trx->packed_trx()->get_signed_transaction();
          transaction_checktime_timer trx_timer(timer);
          transaction_context trx_context(self, *trx->packed_trx(), std::move(trx_timer), start, trx->read_only);
+         trx_context.logtime("NODEOS PRE-CONTEXT-CREATE", t_pre_context_create.count());
+
          if ((bool)subjective_cpu_leeway && pending->_block_status == controller::block_status::incomplete) {
             trx_context.leeway = *subjective_cpu_leeway;
          }
@@ -1497,7 +1500,7 @@ struct controller_impl {
             trace->except_ptr = std::current_exception();
             trace->elapsed = fc::time_point::now() - trx_context.start;
          };
-
+         trx_context.logtime("NODEOS PRE-CONTEXT-INIT");
          try {
             if( trx->implicit ) {
                trx_context.init_for_implicit_trx();

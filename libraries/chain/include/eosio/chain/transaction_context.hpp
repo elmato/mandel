@@ -134,6 +134,10 @@ namespace eosio { namespace chain {
             timelogs.emplace_back(std::make_pair(tag, t.count()));
          }
 
+         void logtime(const std::string& tag, int64_t t) {
+            timelogs.emplace_back(std::make_pair(tag, t));
+         }
+
          vector<digest_type>           executed_action_receipt_digests;
          flat_set<account_name>        bill_to_accounts;
          flat_set<account_name>        validate_ram_usage;
